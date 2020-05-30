@@ -1,47 +1,40 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {User} from '../App';
+import { StyleSheet, Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-ionicons'
+import Timeline from "./Timeline";
+
+const Tab = createBottomTabNavigator();
 
 export interface Props {
-  user: User;
 }
 
 const Main: React.FC<Props> = (props) => {
   return (
-    <View style={styles.container}>
-      <Text>{props.user.backendToken}</Text>
-    </View>
-  );
-};
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
 
-// styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  header: {
-    marginTop: '15%',
-    fontSize: 20,
-    color: 'red',
-    paddingBottom: 10,
-  },
-  textInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    paddingRight: 10,
-    paddingBottom: 10,
-  },
-  textInput: {
-    flex: 1,
-    height: 20,
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'black',
-    paddingLeft: 10,
-    minHeight: '3%',
-  },
-});
+          if (route.name === 'Timeline') {
+            iconName = 'list'
+          } else if (route.name === 'Messages') {
+            iconName = 'musical-note'
+          }
+
+          return <Icon name={iconName} size={size} color={color}/>;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}
+    >
+      <Tab.Screen name="Timeline" component={Timeline}/>
+      <Tab.Screen name="Messages">
+        {props => <Text>Messages</Text>}
+      </Tab.Screen>
+    </Tab.Navigator>);
+};
 
 export default Main;

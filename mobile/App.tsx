@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { Context, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/Login';
 import Main from './src/Main';
-import {useState} from 'react';
 import { ChatCredentials, FeedCredentials } from "./src/Backend";
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 export type Auth = {
   user: string;
@@ -19,6 +18,8 @@ export type Auth = {
 export type AuthState = Auth | null;
 
 const Stack = createStackNavigator();
+
+export const AuthContext = React.createContext<Auth>(undefined!)
 
 function App() {
   const [authState, setAuthState] = useState<AuthState>(null);
@@ -38,8 +39,12 @@ function App() {
             />
           )}
         </Stack.Screen>
-        <Stack.Screen name="Main" options={{title: 'The Stream'}}>
-          {(props) => <Main {...props} user={authState!} />}
+        <Stack.Screen name="Main" options={{ title: 'The Stream' }}>
+          {(props) =>
+            <AuthContext.Provider value={authState!}>
+              <Main {...props} />
+            </AuthContext.Provider>
+          }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
