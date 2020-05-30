@@ -5,14 +5,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Login from './src/Login';
 import Main from './src/Main';
 import {useState} from 'react';
+import { ChatCredentials, FeedCredentials } from "./src/Backend";
 
 declare const global: {HermesInternal: null | {}};
 
 export type Auth = {
   user: string;
   backendToken: string;
-  chatToken: string;
-  feedToken: string;
+  feedCredentials: FeedCredentials;
+  chatCredentials: ChatCredentials;
 };
 
 export type AuthState = Auth | null;

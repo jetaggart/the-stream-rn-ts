@@ -12,14 +12,14 @@ const Login: React.FC<Props> = ({onAuth}) => {
 
   async function login() {
     let backendToken = await backend.login(user);
-    let feedToken = await backend.getFeedToken(backendToken);
-    let chatToken = await backend.getChatToken(backendToken);
+    let feedCredentials = await backend.getFeedToken(backendToken);
+    let chatCredentials = await backend.getChatToken(backendToken);
 
     onAuth({
-      user: user,
+      user,
       backendToken,
-      chatToken,
-      feedToken,
+      feedCredentials,
+      chatCredentials,
     });
   }
 

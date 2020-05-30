@@ -1,17 +1,27 @@
 export async function login(user: string): Promise<string> {
-  return post('/users', {user})
+  return post('/users', { user })
     .then((data) => data.authToken);
 
 }
 
-export async function getFeedToken(backendToken: string): Promise<string> {
-  return post('/stream-feed-credentials', {}, backendToken)
-    .then((data) => data.token);
+
+export type FeedCredentials = {
+  token: string;
+  apiKey: string;
+  appId: string
 }
 
-export async function getChatToken(backendToken: string): Promise<string> {
-  return post('/stream-chat-credentials', {}, backendToken)
-    .then((data) => data.token);
+export async function getFeedToken(backendToken: string): Promise<FeedCredentials> {
+  return post('/stream-feed-credentials', {}, backendToken);
+}
+
+export type ChatCredentials = {
+  token: string;
+  apiKey: string;
+}
+
+export async function getChatToken(backendToken: string): Promise<ChatCredentials> {
+  return post('/stream-chat-credentials', {}, backendToken);
 }
 
 function post(
@@ -24,7 +34,7 @@ function post(
     'Content-Type': 'application/json',
   };
 
-  if(backendToken !== null) {
+  if (backendToken !== null) {
     headers['Authorization'] = `Bearer ${backendToken}`;
   }
 
