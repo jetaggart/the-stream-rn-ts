@@ -1,12 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
-import {User} from '../App';
+import {Auth} from '../App';
+import * as backend from './Backend';
 
 export interface Props {
-  onAuth: (user: User) => void;
+  onAuth: (auth: Auth) => void;
 }
 
-const Login: React.FC<Props> = (props) => {
+const Login: React.FC<Props> = ({onAuth}) => {
+  const [user, setUser] = useState('');
+
+  async function login() {
+    let backendToken = await backend.login(user);
+    let feedToken = await backend.getFeedToken(backendToken);
+    let chatToken = await backend.getChatToken(backendToken);
+
+    onAuth({
+      user: user,
+      backendToken,
+      chatToken,
+      feedToken,
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.textInputContainer}>
@@ -14,12 +30,12 @@ const Login: React.FC<Props> = (props) => {
           style={styles.textInput}
           placeholder="Username"
           placeholderTextColor="#abbabb"
+          onChangeText={setUser}
+          defaultValue={user}
+          autoCapitalize="none"
         />
       </View>
-      <Button
-        title="Login"
-        onPress={() => props.onAuth({backendToken: 'hello 123'})}
-      />
+      <Button title="Login" onPress={login} />
     </View>
   );
 };
@@ -30,18 +46,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
-  header: {
-    marginTop: '15%',
-    fontSize: 20,
-    color: 'red',
-    paddingBottom: 10,
+    backgroundColor: '#ffffff',
+    paddingTop: '25%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
   textInputContainer: {
     flexDirection: 'row',
-    alignItems: 'baseline',
-    paddingRight: 10,
+    paddingTop: 10,
     paddingBottom: 10,
+    borderColor: '#dddddd',
+    borderWidth: 1,
+    marginBottom: '5%',
   },
   textInput: {
     flex: 1,

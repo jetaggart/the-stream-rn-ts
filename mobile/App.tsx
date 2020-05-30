@@ -8,11 +8,14 @@ import {useState} from 'react';
 
 declare const global: {HermesInternal: null | {}};
 
-export type User = {
+export type Auth = {
+  user: string;
   backendToken: string;
+  chatToken: string;
+  feedToken: string;
 };
 
-export type AuthState = User | null;
+export type AuthState = Auth | null;
 
 const Stack = createStackNavigator();
 
@@ -27,6 +30,7 @@ function App() {
             <Login
               {...props}
               onAuth={(as) => {
+                console.log("as", as);
                 setAuthState(as);
                 props.navigation.replace('Main');
               }}
