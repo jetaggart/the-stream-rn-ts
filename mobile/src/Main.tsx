@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-ionicons'
 import Timeline from "./Timeline";
+import People from "./People";
+import Profile from "./Profile";
 
 const Tab = createBottomTabNavigator();
 
-export interface Props {
-}
-
-const Main: React.FC<Props> = (props) => {
+const Main: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -18,8 +16,10 @@ const Main: React.FC<Props> = (props) => {
 
           if (route.name === 'Timeline') {
             iconName = 'list'
-          } else if (route.name === 'Messages') {
-            iconName = 'musical-note'
+          } else if (route.name === 'People') {
+            iconName = 'people'
+          } else if (route.name === 'Profile') {
+            iconName = 'person'
           }
 
           return <Icon name={iconName} size={size} color={color}/>;
@@ -31,9 +31,8 @@ const Main: React.FC<Props> = (props) => {
       }}
     >
       <Tab.Screen name="Timeline" component={Timeline}/>
-      <Tab.Screen name="Messages">
-        {props => <Text>Messages</Text>}
-      </Tab.Screen>
+      <Tab.Screen name="Profile" component={Profile}/>
+      <Tab.Screen name="People" component={People}/>
     </Tab.Navigator>);
 };
 

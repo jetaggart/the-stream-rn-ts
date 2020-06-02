@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Context, useState } from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/Login';
 import Main from './src/Main';
+// @ts-ignore
+import { StreamApp } from 'react-native-activity-feed'
 import { ChatCredentials, FeedCredentials } from "./src/Backend";
-
-declare const global: { HermesInternal: null | {} };
 
 export type Auth = {
   user: string;
@@ -20,6 +20,7 @@ export type AuthState = Auth | null;
 const Stack = createStackNavigator();
 
 export const AuthContext = React.createContext<Auth>(undefined!)
+export const StreamClientContext = React.createContext<any>(undefined!)
 
 function App() {
   const [authState, setAuthState] = useState<AuthState>(null);
@@ -27,7 +28,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login">
+        <Stack.Screen name="Login" options={{ title: 'The Stream' }}>
           {(props) => (
             <Login
               {...props}
@@ -42,7 +43,19 @@ function App() {
         <Stack.Screen name="Main" options={{ title: 'The Stream' }}>
           {(props) =>
             <AuthContext.Provider value={authState!}>
-              <Main {...props} />
+              <StreamApp
+                apiKey={authState?.feedCredentials.apiKey}
+                appId={authState?.feedCredentials.appId}
+                userId={authState?.user}
+                token={authState?.feedCredentials.token}>
+                <StreamApp.Consumer>
+                  {(context: any) => (
+                    <StreamClientContext.Provider value={context.client}>
+                      <Main {...props} />
+                    </StreamClientContext.Provider>
+                  )}
+                </StreamApp.Consumer>
+              </StreamApp>
             </AuthContext.Provider>
           }
         </Stack.Screen>

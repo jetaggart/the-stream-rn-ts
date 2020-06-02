@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
-import {Auth} from '../App';
+import React, { useState } from 'react';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
+import { Auth } from '../App';
 import * as backend from './Backend';
 
 export interface Props {
   onAuth: (auth: Auth) => void;
 }
 
-const Login: React.FC<Props> = ({onAuth}) => {
+const Login: React.FC<Props> = ({ onAuth }) => {
   const [user, setUser] = useState('');
 
   async function login() {
@@ -29,13 +29,12 @@ const Login: React.FC<Props> = ({onAuth}) => {
         <TextInput
           style={styles.textInput}
           placeholder="Username"
-          placeholderTextColor="#abbabb"
           onChangeText={setUser}
           defaultValue={user}
           autoCapitalize="none"
         />
       </View>
-      <Button title="Login" onPress={login} />
+      <Button title="Login" onPress={login}/>
     </View>
   );
 };

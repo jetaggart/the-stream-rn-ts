@@ -1,5 +1,5 @@
 {
-  "name": "TheStreamRNTypeScript",
+  "name": "the-stream",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -16,6 +16,7 @@
     "@react-navigation/stack": "^5.4.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-activity-feed": "^0.9.1",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-ionicons": "^4.6.5",
     "react-native-reanimated": "^1.9.0",
@@ -38,6 +39,9 @@
     "prettier": "^2.0.4",
     "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"
+  },
+  "resolutions": {
+    "@types/react": "16.7.18"
   },
   "jest": {
     "preset": "react-native",

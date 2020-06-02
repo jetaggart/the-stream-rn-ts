@@ -4,7 +4,6 @@ export async function login(user: string): Promise<string> {
 
 }
 
-
 export type FeedCredentials = {
   token: string;
   apiKey: string;
@@ -24,10 +23,23 @@ export async function getChatToken(backendToken: string): Promise<ChatCredential
   return post('/stream-chat-credentials', {}, backendToken);
 }
 
-function post(
+export async function users(backendToken: string): Promise<string[]> {
+  return get('/users', backendToken).then(response => response.users)
+}
+
+function get(path: string, backendToken: string) {
+  return request(path, null, backendToken, 'GET')
+}
+
+function post(path: string, body: any, backendToken: string | null = null) {
+  return request(path, body, backendToken, 'POST')
+}
+
+function request(
   path: string,
   body: any,
-  backendToken: string | null = null,
+  backendToken: string | null,
+  method: string,
 ): Promise<any> {
   let headers: { [key: string]: string } = {
     'Accept': 'application/json',
@@ -38,9 +50,9 @@ function post(
     headers['Authorization'] = `Bearer ${backendToken}`;
   }
 
-  return fetch(`http://localhost:8080/v1${path}`, {
-    method: 'POST',
+  return fetch(`https://e532d01384aa.ngrok.io/v1${path}`, {
+    method: method,
     headers,
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   }).then((res) => res.json());
 }
